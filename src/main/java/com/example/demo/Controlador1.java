@@ -20,35 +20,32 @@ public class Controlador1 {
     private boolean personaIntroducida=false;
 
     private boolean validaPersona(Persona p){
-        if(6> p.getUsuario().length() || 10<p.getUsuario().length())
+  /*      if(6> p.getUser().length() || 10<p.getUser().length())
             return false;
         if(p.getPassword()==null || p.getName()==null || p.getCity()==null || p.getCreated_date()==null)
             return false;
         if(!p.getCompany_email().contains("@"))
             return false;
         if(!p.getPersonal_email().contains("@"))
-            return false;
+            return false;*/
         return true;
     }
 
     private boolean introducirPersona(){
-        if(this.personaIntroducida)
-            return false;
+        //if(this.personaIntroducida)            return false;
         this.personaIntroducida=true;
         Persona p = new Persona();
-        p.setUsuario("alberto");
-        p.setPassword("aa");
-        p.setName("aa");
-        p.setCity("Zaragoza");
-        p.setCreated_date(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-        p.setCompany_email("098@09");
-        p.setPersonal_email("dsfgdfs@sdfffsd ");
 
+
+       p.setNombre("alberto");
+        p.setEdad("1");
+        p.setPoblacion("Zaragoza");
 
 
         if(this.validaPersona(p)) {
             personaRepository.save(p);
-            personaRepository.flush();
+
+          //  personaRepository.flush();
         }
         else{
             System.out.println("Datos de la persona NO validos");
@@ -79,20 +76,14 @@ public class Controlador1 {
 
     @GetMapping("/nombre2/{id2}")
     public List<Persona> mostrarPorNombre2(@PathVariable String id2){
-        return personaRepository.encontrarPorNombre(id2);
-        //return personaRepository.findByName(id2);
+        //return personaRepository.encontrarPorNombre(id2);
+        return personaRepository.findByNombre(id2);
     }
 
     @GetMapping("/nombre") // esta es solo de prueba
     public List<Persona> mostrarPorNombre(){
         //return personaRepository.encontrarPorNombre("a");
-        return personaRepository.findByName("a");
+        return personaRepository.findByNombre("a");
     }
-
-
-
-
-
-
 
 }

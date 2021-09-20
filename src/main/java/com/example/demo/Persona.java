@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 @Setter
@@ -16,15 +18,16 @@ import java.sql.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "persona")
-public class Persona {
+@Service
+public class Persona implements Serializable {
     @Id
-    @GeneratedValue
-    Integer Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-    @Column
-    String usuario,password,name,surname,company_email,personal_email,city;
-    boolean active;
-    Date created_date;
-    String imagen_url;
-    Date termination_date;
+    @Column(name="edad")
+    String edad;
+    @Column(name="nombre")
+    String nombre;
+    @Column(name="poblacion")
+    String poblacion;
 }
