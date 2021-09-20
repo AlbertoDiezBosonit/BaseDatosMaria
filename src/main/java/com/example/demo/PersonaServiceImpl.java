@@ -54,7 +54,7 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public List<Persona> mostrarPorNombre(String nombre) {
+    public List<Persona>  mostrarPorNombre(String nombre) {
         return personaRepository.findByName(nombre);
     }
 }
