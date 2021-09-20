@@ -19,71 +19,28 @@ import java.util.Optional;
 public class Controlador1 {
     private boolean personaIntroducida=false;
 
-    private boolean validaPersona(Persona p){
-  /*      if(6> p.getUser().length() || 10<p.getUser().length())
-            return false;
-        if(p.getPassword()==null || p.getName()==null || p.getCity()==null || p.getCreated_date()==null)
-            return false;
-        if(!p.getCompany_email().contains("@"))
-            return false;
-        if(!p.getPersonal_email().contains("@"))
-            return false;*/
-        return true;
-    }
-
-    private boolean introducirPersona(){
-        //if(this.personaIntroducida)            return false;
-        this.personaIntroducida=true;
-        Persona p = new Persona();
-
-
-       p.setNombre("alberto");
-        p.setEdad("1");
-        p.setPoblacion("Zaragoza");
-
-
-        if(this.validaPersona(p)) {
-            personaRepository.save(p);
-
-          //  personaRepository.flush();
-        }
-        else{
-            System.out.println("Datos de la persona NO validos");
-        }
-        return true;
-    }
-
-    @Autowired
-    PersonaRepository personaRepository;
+    private PersonaService personaService= new    PersonaServiceImpl() ;
 
     @GetMapping("") // sencillamente mostramos todos los registros
     public List<Persona> listaPersonas(){
-        /*Persona p=new Persona();
-        p.setActive(true);
-        p.setName("a");
-        p.setCity("Logroño");
-        p.setCompany_email("A");
-        personaRepository.save(p);
-        personaRepository.flush();*/
-        this.introducirPersona();
-        return personaRepository.findAll();
+        return personaService.listaPersonas();
     }
 
     @GetMapping("/{id}")
-    public Optional<Persona> retorna(@PathVariable Integer id){
-        return personaRepository.findById(id);
+    public Optional<Persona> retorna(@PathVariable Long id){
+        return personaService.retornaPorId(id);
     }
 
     @GetMapping("/nombre2/{id2}")
     public List<Persona> mostrarPorNombre2(@PathVariable String id2){
         //return personaRepository.encontrarPorNombre(id2);
-        return personaRepository.findByNombre(id2);
+        return personaService.mostrarPorNombre(id2);
     }
 
     @GetMapping("/nombre") // esta es solo de prueba
     public List<Persona> mostrarPorNombre(){
         //return personaRepository.encontrarPorNombre("a");
-        return personaRepository.findByNombre("a");
+        return personaService.mostrarPorNombre("a");
     }
 
 }
