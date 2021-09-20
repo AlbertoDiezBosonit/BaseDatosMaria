@@ -1,11 +1,12 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-//@Service
+@Service //el service es necesario
 public class PersonaServiceImpl implements PersonaService {
 
     @Autowired
@@ -27,31 +28,33 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public boolean insertaPersona(Persona p) {
-        return false;
+        return p==personaRepository.save(p);
     }
 
     @Override
-    public boolean eliminaPersona(Persona p) {
-        return false;
+    public void eliminaPersona(Persona p) {
+        personaRepository.delete(p);
     }
 
     @Override
     public boolean actualizaPersona(Persona p) {
-        return false;
+        return p==personaRepository.save(p);
     }
 
     @Override
     public List<Persona> listaPersonas() {
+        if(personaRepository!=null)
+            return personaRepository.findAll();
         return null;
     }
 
     @Override
     public Optional<Persona> retornaPorId(Long id) {
-        return Optional.empty();
+        return personaRepository.findById(id);
     }
 
     @Override
     public List<Persona> mostrarPorNombre(String nombre) {
-        return null;
+        return personaRepository.findByName(nombre);
     }
 }

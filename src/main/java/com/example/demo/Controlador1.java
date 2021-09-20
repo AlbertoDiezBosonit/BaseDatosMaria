@@ -19,11 +19,15 @@ import java.util.Optional;
 public class Controlador1 {
     private boolean personaIntroducida=false;
 
-    private PersonaService personaService= new    PersonaServiceImpl() ;
+    @Autowired
+    PersonaServiceImpl personaService;
+
 
     @GetMapping("") // sencillamente mostramos todos los registros
     public List<Persona> listaPersonas(){
+
         return personaService.listaPersonas();
+//        return personaRepository.findAll();
     }
 
     @GetMapping("/{id}")

@@ -13,7 +13,7 @@ public interface PersonaService {
 
     boolean insertaPersona(Persona p);
 
-    boolean eliminaPersona(Persona p);
+    void eliminaPersona(Persona p);
 
     boolean actualizaPersona(Persona p);
 
