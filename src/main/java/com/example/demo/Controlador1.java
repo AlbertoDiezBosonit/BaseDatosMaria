@@ -23,7 +23,7 @@ public class Controlador1 {
     PersonaServiceImpl personaService;
 
 
-    @GetMapping("") // sencillamente mostramos todos los    registros
+    @GetMapping("") // sencillamente mostramos todos los  registros
     public List<Persona> listaPersonas(){
 
         return personaService.listaPersonas();
