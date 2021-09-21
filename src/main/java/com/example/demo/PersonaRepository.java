@@ -13,5 +13,7 @@ public interface PersonaRepository extends JpaRepository<Persona,Long> {
     // el query tiene que estar aqui
 
     List<Persona> findByName(String name);
+
+    List<Persona> findByUser(String user);
     // así es mas simple
 }

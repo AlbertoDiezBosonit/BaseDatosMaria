@@ -3,10 +3,7 @@ package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.sql.Date;
@@ -20,31 +17,54 @@ public class Controlador1 {
     private boolean personaIntroducida=false;
 
     @Autowired
-    PersonaServiceImpl personaService;
+    PersonaService personaService;
 
 
-    @GetMapping("") // sencillamente mostramos todos los  registros
-    public List<Persona> listaPersonas(){
-
-        return personaService.listaPersonas();
-//        return personaRepository.findAll();
+    @PostMapping("/addPersona")
+    public PersonaOutputDto addPersona(@ModelAttribute PersonaInputDto persona ) throws Exception {
+        if(personaService.actualizaPersona(persona) )
+            return  new PersonaOutputDto(persona.toPersona());
+        throw new Exception("Fallo al insertar persona");
     }
+
 
     @GetMapping("/{id}")
-    public Optional<Persona> retorna(@PathVariable Long id){
-        return personaService.retornaPorId(id);
+    public PersonaOutputDto retorna(@PathVariable Long id){
+        return personaService.retornaPorIdOutput(id);
     }
 
-    @GetMapping("/nombre2/{id2}")
-    public List<Persona> mostrarPorNombre2(@PathVariable String id2){
+    @GetMapping("/nombre/{id}")
+    public List<PersonaOutputDto> mostrarPorNombre2(@PathVariable String id){
         //return personaRepository.encontrarPorNombre(id2);
-        return personaService.mostrarPorNombre(id2);
+        return personaService.mostrarPorNombreOutput(id);
     }
 
-    @GetMapping("/nombre") // esta es solo de prueba
-    public List<Persona> mostrarPorNombre(){
-        //return personaRepository.encontrarPorNombre("a");
-        return personaService.mostrarPorNombre("a");
+    @GetMapping("/user/{id}")
+    public List<PersonaOutputDto> mostrarPorUser(@PathVariable String id){
+        //return personaRepository.encontrarPorNombre(id2);
+        return personaService.retornaPorUserOutput(id);
     }
+
+    @GetMapping("")
+    public List<PersonaOutputDto> retornaTodas(){
+        return personaService.listaPersonasOutput();
+    }
+
+    @PutMapping("/{id}")
+    public PersonaOutputDto actualizar(@ModelAttribute PersonaInputDto persona ) throws Exception {
+        personaService.actualizaPersona(persona.toPersona());
+        return new PersonaOutputDto(persona.toPersona());
+    }
+
+    @DeleteMapping("/{id}")
+    public String borraPersona(@PathVariable Integer id) {
+     /*   personaService.eliminaPersona();
+        String retorno = personas.retornaPorId(id).getNombre();
+        personas.eliminarPersona(id);
+        return retorno;*/
+        return "";
+    }
+
+
 
 }
