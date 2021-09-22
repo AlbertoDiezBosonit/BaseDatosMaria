@@ -17,6 +17,7 @@ public class PersonaInputDto {
     String city;
     String imagen_url;
     Date termination_date;
+    Date created_date;
 
     public PersonaInputDto(Persona p){
         if(p!=null){
@@ -27,10 +28,11 @@ public class PersonaInputDto {
             this.setName(p.getName());
             this.setSurname(p.getSurname());
             this.setCompany_email(p.getCompany_email());
-            this.setPersonal_email(p.getCompany_email());
+            this.setPersonal_email(p.getPersonal_email());
             this.setCity(p.getCity());
             this.setImagen_url(p.getImagen_url());
             this.setTermination_date(p.getTermination_date());
+            this.setCreated_date(p.getCreated_date());
         }
     }
 
@@ -46,6 +48,7 @@ public class PersonaInputDto {
         p.setCity(this.getCity());
         p.setImagen_url(this.getImagen_url());
         p.setTermination_date(this.getTermination_date());
+        p.setCreated_date(this.getCreated_date());
         return p;
     }
 
@@ -60,6 +63,7 @@ public class PersonaInputDto {
         p.setCity(this.getCity());
         p.setImagen_url(this.getImagen_url());
         p.setTermination_date(this.getTermination_date());
+        p.setCreated_date(this.getCreated_date());
         return p;
     }
 

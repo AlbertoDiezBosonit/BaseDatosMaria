@@ -28,37 +28,41 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public boolean insertaPersona(Persona p) {
+    public PersonaOutputDto insertaPersona(Persona p) {
         p.setActive("activo");
         p.setCreated_date(new java.sql.Date(new java.util.Date().getTime()));
-        if(validaPersona(p))
-            return p==personaRepository.save(p);
-        return false;
+        if(validaPersona(p)) {
+            personaRepository.save(p);
+            return new PersonaOutputDto(p);
+        }
+        return null;
 
     }
 
     @Override
-    public boolean insertaPersona(PersonaInputDto p) {
+    public PersonaOutputDto insertaPersona(PersonaInputDto p) {
         // vamos a eliminar el id para insertarlo en la base de datos
         p.setId(null);
         return insertaPersona(p.toPersona());
     }
 
     @Override
-    public boolean actualizaPersona(Long id,PersonaInputDto p){
-        Persona persona=p.toPersona();
-        persona.setId(id);
+    public  PersonaOutputDto actualizaPersona(PersonaInputDto p){
+        Persona persona=personaRepository.getById(p.getId());
+        persona=p.toPersona(persona);
         //persona.setCreated_date(new java.sql.Date(new java.util.Date().getTime()));
         return actualizaPersona(persona);
         //return persona==personaRepository.save(persona);
     }
 
     @Override
-    public boolean actualizaPersona(Persona p) {
+    public  PersonaOutputDto actualizaPersona(Persona p) {
         p.setActive("true");
-        if(this.validaPersona(p))
-            return p==personaRepository.save(p);
-        return false;
+        if(this.validaPersona(p)) {
+            personaRepository.save(p);
+            return new PersonaOutputDto(p);
+        }
+        return null;
     }
 
     @Override

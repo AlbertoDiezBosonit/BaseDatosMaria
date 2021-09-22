@@ -13,8 +13,8 @@ public interface PersonaService {
     // ahora toda la logica de persona
     boolean validaPersona(Persona p);
 
-    boolean insertaPersona(PersonaInputDto p);
-    boolean insertaPersona(Persona p);
+    PersonaOutputDto insertaPersona(PersonaInputDto p);
+    PersonaOutputDto insertaPersona(Persona p);
 
     void eliminaPersona(Persona p);
 
@@ -22,9 +22,9 @@ public interface PersonaService {
 
     boolean eliminaPersonaPorId(Long id);
 
-    boolean actualizaPersona(Persona p);
+    PersonaOutputDto actualizaPersona(Persona p);
 
-    boolean actualizaPersona(Long Id,PersonaInputDto p);
+    PersonaOutputDto actualizaPersona(PersonaInputDto p);
 
     List<Persona> listaPersonas();
 

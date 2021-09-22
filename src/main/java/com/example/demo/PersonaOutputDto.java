@@ -36,7 +36,7 @@ public class PersonaOutputDto {
             this.setName(p.getName());
             this.setSurname(p.getSurname());
             this.setCompany_email(p.getCompany_email());
-            this.setPersonal_email(p.personal_email);
+            this.setPersonal_email(p.getPersonal_email());
             this.setCity(p.getCity());
             this.setImagen_url(p.getImagen_url());
             this.setTermination_date(p.getTermination_date());

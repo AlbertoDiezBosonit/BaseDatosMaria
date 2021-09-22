@@ -24,8 +24,9 @@ public class Controlador1 {
     @PostMapping("/addPersona")
     @Transactional(rollbackOn = Exception.class)
     public PersonaOutputDto addPersona(@ModelAttribute/*@RequestBody*/ PersonaInputDto persona ) throws Exception {
-        if(personaService.insertaPersona(persona) )
-            return  new PersonaOutputDto(persona.toPersona());
+        PersonaOutputDto retorno=personaService.insertaPersona(persona);
+        if( retorno!=null)
+            return  retorno;
         throw new Exception("Fallo al insertar persona");
     }
 
@@ -53,16 +54,15 @@ public class Controlador1 {
     @PutMapping("") // actualizamos la persona, hay que estar atentos a la id
     @Transactional(rollbackOn = Exception.class)
     public PersonaOutputDto actualizar(@ModelAttribute PersonaInputDto persona ) throws Exception {
-        personaService.actualizaPersona(persona.toPersona());
-        return new PersonaOutputDto(persona.toPersona());
+        return personaService.actualizaPersona(persona);
     }
 
     @DeleteMapping("/{id}")
     @Transactional(rollbackOn = Exception.class)
-    public String borraPersona(@PathVariable Long id) {
+    public String borraPersona(@PathVariable Long id) throws Exception{
         if( personaService.eliminaPersonaPorId(id))
             return "Borrado";
-        return "No se ha podido borrar por que no se ha encontrado";
+        throw new Exception("Fallo al borrar persona");
     }
 
 
