@@ -14,7 +14,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("persona")
 public class Controlador1 {
-    private boolean personaIntroducida=false;
+    private boolean personaIntroducida=false ;
 
     @Autowired
     PersonaService personaService;
