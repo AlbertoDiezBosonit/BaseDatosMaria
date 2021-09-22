@@ -3,6 +3,7 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,14 +17,17 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public boolean validaPersona(Persona p){
+        boolean valido=true;
         if(6> p.getUser().length() || 10<p.getUser().length())
-            return false;
+            valido=false;
         if(p.getPassword()==null || p.getName()==null || p.getCity()==null || p.getCreated_date()==null)
-            return false;
+            valido=false;
         if(!p.getCompany_email().contains("@"))
-            return false;
+            valido=false;
         if(!p.getPersonal_email().contains("@"))
-            return false;
+            valido=false;
+        if(!valido)
+            throw new BeanUnprocesableException("Los datos no son correctos");
         return true;
     }
 
@@ -48,8 +52,14 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public  PersonaOutputDto actualizaPersona(PersonaInputDto p){
-        Persona persona=personaRepository.getById(p.getId());
-        persona=p.toPersona(persona);
+        Persona persona;
+        try {
+            persona = personaRepository.getById(p.getId());
+            persona=p.toPersona(persona);
+        }catch (EntityNotFoundException e){
+            return null;
+        }
+
         //persona.setCreated_date(new java.sql.Date(new java.util.Date().getTime()));
         return actualizaPersona(persona);
         //return persona==personaRepository.save(persona);
@@ -77,12 +87,16 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public boolean eliminaPersonaPorId(Long id){
-        Persona p=personaRepository.getById(id);
-        if(p!=null) {
-            personaRepository.delete(p);
-            return true;
+        try {
+            Persona p = personaRepository.getById(id);
+            if (p.getUser() != null) { // hasta que no se hae un get que no sea del id no salta la excepcion
+                personaRepository.delete(p);
+                return true;
+            }
+            return false;
+        }catch(EntityNotFoundException e){
+            return false;
         }
-        return  false;
     }
 
 
@@ -109,13 +123,16 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public Optional<Persona> retornaPorId(Long id) {
-        return personaRepository.findById(id);
+        Optional<Persona> retorno=personaRepository.findById(id);
+        if(retorno.isEmpty())
+            return null;
+        return retorno;
     }
 
    @Override
    public PersonaOutputDto retornaPorIdOutput( Long id){
         Optional<Persona> p=retornaPorId(id);
-        if (!p.isEmpty()) {
+        if (p!=null && !p.isEmpty()) {
             return new PersonaOutputDto(p.get());
         }
         return null;

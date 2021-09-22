@@ -1,6 +1,7 @@
 package com.example.demo;
 
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,10 @@ public class Controlador1 {
 
     @GetMapping("/{id}")
     public PersonaOutputDto retorna(@PathVariable Long id){
-        return personaService.retornaPorIdOutput(id);
+        PersonaOutputDto p=personaService.retornaPorIdOutput(id);
+        if(p==null)
+            throw new BeanNotFoundException("No se ha encontrado ningún registro con esa id");
+        return p;
     }
 
     @GetMapping("/nombre/{id}")
@@ -54,7 +58,10 @@ public class Controlador1 {
     @PutMapping("") // actualizamos la persona, hay que estar atentos a la id
     @Transactional(rollbackOn = Exception.class)
     public PersonaOutputDto actualizar(@ModelAttribute PersonaInputDto persona ) throws Exception {
-        return personaService.actualizaPersona(persona);
+        PersonaOutputDto retorno=personaService.actualizaPersona(persona);
+        if(retorno!=null)
+            return retorno;
+        throw new BeanNotFoundException("No se ha encontrado ningún registro con esa id para ser actualizado");
     }
 
     @DeleteMapping("/{id}")
@@ -62,13 +69,6 @@ public class Controlador1 {
     public String borraPersona(@PathVariable Long id) throws Exception{
         if( personaService.eliminaPersonaPorId(id))
             return "Borrado";
-        throw new Exception("Fallo al borrar persona");
+        throw new BeanNotFoundException("No se ha encontrado ningún registro con esa id para ser borrado");
     }
-
-
-
-
-
-
-
 }
