@@ -48,7 +48,6 @@ public class PersonaServiceImpl implements PersonaService {
     public boolean actualizaPersona(Long id,PersonaInputDto p){
         Persona persona=p.toPersona();
         persona.setId(id);
-        persona.setActive("activo");
         //persona.setCreated_date(new java.sql.Date(new java.util.Date().getTime()));
         return actualizaPersona(persona);
         //return persona==personaRepository.save(persona);
@@ -57,7 +56,9 @@ public class PersonaServiceImpl implements PersonaService {
     @Override
     public boolean actualizaPersona(Persona p) {
         p.setActive("true");
-        return p==personaRepository.save(p);
+        if(this.validaPersona(p))
+            return p==personaRepository.save(p);
+        return false;
     }
 
     @Override
