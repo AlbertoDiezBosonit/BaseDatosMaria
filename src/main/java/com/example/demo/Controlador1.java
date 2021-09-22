@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
@@ -14,15 +15,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping("persona")
 public class Controlador1 {
-    private boolean personaIntroducida=false ;
+
 
     @Autowired
     PersonaService personaService;
 
 
     @PostMapping("/addPersona")
-    public PersonaOutputDto addPersona(@ModelAttribute PersonaInputDto persona ) throws Exception {
-        if(personaService.actualizaPersona(persona) )
+    @Transactional(rollbackOn = Exception.class)
+    public PersonaOutputDto addPersona(@ModelAttribute/*@RequestBody*/ PersonaInputDto persona ) throws Exception {
+        if(personaService.insertaPersona(persona) )
             return  new PersonaOutputDto(persona.toPersona());
         throw new Exception("Fallo al insertar persona");
     }
@@ -35,13 +37,11 @@ public class Controlador1 {
 
     @GetMapping("/nombre/{id}")
     public List<PersonaOutputDto> mostrarPorNombre2(@PathVariable String id){
-        //return personaRepository.encontrarPorNombre(id2);
         return personaService.mostrarPorNombreOutput(id);
     }
 
     @GetMapping("/user/{id}")
     public List<PersonaOutputDto> mostrarPorUser(@PathVariable String id){
-        //return personaRepository.encontrarPorNombre(id2);
         return personaService.retornaPorUserOutput(id);
     }
 
@@ -50,20 +50,24 @@ public class Controlador1 {
         return personaService.listaPersonasOutput();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("") // actualizamos la persona, hay que estar atentos a la id
+    @Transactional(rollbackOn = Exception.class)
     public PersonaOutputDto actualizar(@ModelAttribute PersonaInputDto persona ) throws Exception {
         personaService.actualizaPersona(persona.toPersona());
         return new PersonaOutputDto(persona.toPersona());
     }
 
     @DeleteMapping("/{id}")
-    public String borraPersona(@PathVariable Integer id) {
-     /*   personaService.eliminaPersona();
-        String retorno = personas.retornaPorId(id).getNombre();
-        personas.eliminarPersona(id);
-        return retorno;*/
-        return "";
+    @Transactional(rollbackOn = Exception.class)
+    public String borraPersona(@PathVariable Long id) {
+        if( personaService.eliminaPersonaPorId(id))
+            return "Borrado";
+        return "No se ha podido borrar por que no se ha encontrado";
     }
+
+
+
+
 
 
 
