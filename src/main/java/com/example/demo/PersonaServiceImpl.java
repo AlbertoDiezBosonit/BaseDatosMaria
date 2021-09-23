@@ -19,19 +19,19 @@ public class PersonaServiceImpl implements PersonaService {
     public boolean validaPersona(Persona p){
         String mensajeError="";
         if(6> p.getUser().length() || 10<p.getUser().length())
-            mensajeError+="La longitud de User no es la correcta/n";
+            mensajeError+="La longitud de User no es la correcta"+System.lineSeparator();
         if(p.getPassword()==null)
-            mensajeError+="No hay mensaje de error/n";
+            mensajeError+="No hay mensaje de error"+System.lineSeparator();
         if( p.getName()==null)
-            mensajeError+="No hay nombre/n";
+            mensajeError+="No hay nombre"+System.lineSeparator();
         if( p.getCity()==null)
-            mensajeError+="No se ha indicado una ciudad/n";
+            mensajeError+="No se ha indicado una ciudad"+System.lineSeparator();
         if( p.getCreated_date()==null)
-            mensajeError+="No se ha aportado una fecha de creación/n";
+            mensajeError+="No se ha aportado una fecha de creación"+System.lineSeparator();
         if(!p.getCompany_email().contains("@"))
-            mensajeError+="No se ha aportado un email de empresa correcto/n";
+            mensajeError+="No se ha aportado un email de empresa correcto"+System.lineSeparator();
         if(!p.getPersonal_email().contains("@"))
-            mensajeError+="No se ha aportado un email personal correcto/n";
+            mensajeError+="No se ha aportado un email personal correcto"+System.lineSeparator();
         if(!mensajeError.equals(""))
             throw new BeanUnprocesableException(mensajeError);
         return true;
