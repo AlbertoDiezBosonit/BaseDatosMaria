@@ -33,7 +33,7 @@ public class PersonaServiceImpl implements PersonaService {
         if(!p.getPersonal_email().contains("@"))
             mensajeError+="No se ha aportado un email personal correcto/n";
         if(!mensajeError.equals(""))
-            throw new BeanUnprocesableException("Los datos no son correctos");
+            throw new BeanUnprocesableException(mensajeError);
         return true;
     }
 
