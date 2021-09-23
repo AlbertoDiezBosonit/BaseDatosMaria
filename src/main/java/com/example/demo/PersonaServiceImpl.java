@@ -7,6 +7,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service //el service es necesario
 public class PersonaServiceImpl implements PersonaService {
@@ -117,11 +118,7 @@ public class PersonaServiceImpl implements PersonaService {
     @Override
     public List<PersonaOutputDto> listaPersonasOutput(){
         if(personaRepository!=null) {
-            List<PersonaOutputDto> retorno=new ArrayList<>();
-            List<Persona> personas=personaRepository.findAll();
-            for(Persona p:personas)
-                retorno.add(new PersonaOutputDto(p));
-            return retorno;
+            return personaRepository.findAll().stream().map(p -> new PersonaOutputDto(p)).collect(Collectors.toList());
         }
         return null;
     }
@@ -150,19 +147,11 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public List<PersonaOutputDto> mostrarPorNombreOutput(String nombre){
-        List<PersonaOutputDto> retorno=new ArrayList<>();
-        List<Persona> personas=personaRepository.findByName(nombre);
-        for(Persona p:personas)
-            retorno.add(new PersonaOutputDto(p));
-        return retorno;
+        return personaRepository.findByName(nombre).stream().map(p -> new PersonaOutputDto(p)).collect(Collectors.toList());
     }
 
     @Override
     public List<PersonaOutputDto> retornaPorUserOutput( String user){
-        List<PersonaOutputDto> retorno=new ArrayList<>();
-        List<Persona> personas=personaRepository.findByUser(user);
-        for(Persona p:personas)
-            retorno.add(new PersonaOutputDto(p));
-        return retorno;
+        return personaRepository.findByUser(user).stream().map(p -> new PersonaOutputDto(p)).collect(Collectors.toList());
     }
 }
