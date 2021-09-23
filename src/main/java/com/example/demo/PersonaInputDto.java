@@ -7,7 +7,7 @@ import java.sql.Date;
 @Data
 public class PersonaInputDto {
     // clase DTO para el tipo persona
-    Long id;
+//    Long id; // el input no debe tener un id
     String user ;
     String password ;
     String name ;
@@ -21,8 +21,6 @@ public class PersonaInputDto {
 
     public PersonaInputDto(Persona p){
         if(p!=null){
-            if(p.getId()!=null)
-                this.setId(p.getId());
             this.setUser(p.getUser());
             this.setPassword(p.getPassword());
             this.setName(p.getName());
@@ -38,7 +36,6 @@ public class PersonaInputDto {
 
     public Persona toPersona(){
         Persona p=new Persona();
-        p.setId(this.getId());
         p.setUser(this.getUser());
         p.setPassword(this.getPassword());
         p.setName(this.getName());
@@ -53,17 +50,29 @@ public class PersonaInputDto {
     }
 
     public Persona toPersona(Persona p){
-        p.setId(this.getId());
-        p.setUser(this.getUser());
-        p.setPassword(this.getPassword());
-        p.setName(this.getName());
-        p.setSurname(this.getSurname());
-        p.setCompany_email(this.getCompany_email());
-        p.setPersonal_email(this.getPersonal_email());
-        p.setCity(this.getCity());
-        p.setImagen_url(this.getImagen_url());
-        p.setTermination_date(this.getTermination_date());
-        p.setCreated_date(this.getCreated_date());
+        if(p==null)
+            return this.toPersona();
+        // solo actualizamos los datos que existen, no tienen por que estar todos
+        if(this.getUser()!=null)
+            p.setUser(this.getUser());
+        if(this.getPassword()!=null)
+            p.setPassword(this.getPassword());
+        if(this.getName()!=null)
+            p.setName(this.getName());
+        if(this.getSurname()!=null)
+            p.setSurname(this.getSurname());
+        if(this.getCompany_email()!=null)
+            p.setCompany_email(this.getCompany_email());
+        if(this.getPersonal_email()!=null)
+            p.setPersonal_email(this.getPersonal_email());
+        if(this.getCity()!=null)
+            p.setCity(this.getCity());
+        if(this.getImagen_url()!=null)
+            p.setImagen_url(this.getImagen_url());
+        if(this.getTermination_date()!=null)
+            p.setTermination_date(this.getTermination_date());
+        if(this.getCreated_date()!=null)
+            p.setCreated_date(this.getCreated_date());
         return p;
     }
 

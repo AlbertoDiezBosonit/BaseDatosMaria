@@ -60,6 +60,8 @@ public class PersonaOutputDto {
     }
 
     public Persona toPersona(Persona p){
+        if(p==null)
+            return this.toPersona();
         if(this.getId()!=null)
             p.setId(this.getId());
         p.setUser(this.getUser());

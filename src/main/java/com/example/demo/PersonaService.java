@@ -24,7 +24,7 @@ public interface PersonaService {
 
     PersonaOutputDto actualizaPersona(Persona p);
 
-    PersonaOutputDto actualizaPersona(PersonaInputDto p);
+    PersonaOutputDto actualizaPersona(Long id,PersonaInputDto p);
 
     List<Persona> listaPersonas();
 

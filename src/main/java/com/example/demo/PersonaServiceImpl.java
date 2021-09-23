@@ -17,16 +17,22 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public boolean validaPersona(Persona p){
-        boolean valido=true;
+        String mensajeError="";
         if(6> p.getUser().length() || 10<p.getUser().length())
-            valido=false;
-        if(p.getPassword()==null || p.getName()==null || p.getCity()==null || p.getCreated_date()==null)
-            valido=false;
+            mensajeError+="La longitud de User no es la correcta/n";
+        if(p.getPassword()==null)
+            mensajeError+="No hay mensaje de error/n";
+        if( p.getName()==null)
+            mensajeError+="No hay nombre/n";
+        if( p.getCity()==null)
+            mensajeError+="No se ha indicado una ciudad/n";
+        if( p.getCreated_date()==null)
+            mensajeError+="No se ha aportado una fecha de creación/n";
         if(!p.getCompany_email().contains("@"))
-            valido=false;
+            mensajeError+="No se ha aportado un email de empresa correcto/n";
         if(!p.getPersonal_email().contains("@"))
-            valido=false;
-        if(!valido)
+            mensajeError+="No se ha aportado un email personal correcto/n";
+        if(!mensajeError.equals(""))
             throw new BeanUnprocesableException("Los datos no son correctos");
         return true;
     }
@@ -46,15 +52,14 @@ public class PersonaServiceImpl implements PersonaService {
     @Override
     public PersonaOutputDto insertaPersona(PersonaInputDto p) {
         // vamos a eliminar el id para insertarlo en la base de datos
-        p.setId(null);
         return insertaPersona(p.toPersona());
     }
 
     @Override
-    public  PersonaOutputDto actualizaPersona(PersonaInputDto p){
+    public  PersonaOutputDto actualizaPersona(Long id,PersonaInputDto p){
         Persona persona;
         try {
-            persona = personaRepository.getById(p.getId());
+            persona = personaRepository.getById(id);
             persona=p.toPersona(persona);
         }catch (EntityNotFoundException e){
             return null;

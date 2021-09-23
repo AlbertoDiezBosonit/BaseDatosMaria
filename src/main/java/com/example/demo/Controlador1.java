@@ -55,10 +55,10 @@ public class Controlador1 {
         return personaService.listaPersonasOutput();
     }
 
-    @PutMapping("") // actualizamos la persona, hay que estar atentos a la id
+    @PutMapping("{id}") // actualizamos la persona, hay que estar atentos a la id
     @Transactional(rollbackOn = Exception.class)
-    public PersonaOutputDto actualizar(@ModelAttribute PersonaInputDto persona ) throws Exception {
-        PersonaOutputDto retorno=personaService.actualizaPersona(persona);
+    public PersonaOutputDto actualizar(@PathVariable Long id,@ModelAttribute PersonaInputDto persona ) throws Exception {
+        PersonaOutputDto retorno=personaService.actualizaPersona(id,persona);
         if(retorno!=null)
             return retorno;
         throw new BeanNotFoundException("No se ha encontrado ningún registro con esa id para ser actualizado");
